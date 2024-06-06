@@ -1,0 +1,10 @@
+{
+	"require": {
+		"mpdf/mpdf": "8.0.17"
+	},
+	"config": { 
+        "platform": { 
+            "php": "7.4" 
+        } 
+    }
+}
