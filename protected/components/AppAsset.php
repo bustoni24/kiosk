@@ -4,6 +4,8 @@ class AppAsset
 	private static $css = [
 		'plugins/fontawesome-free/css/all.min.css',
 		'plugins/overlayScrollbars/css/OverlayScrollbars.min.css',
+		'plugins/select2/css/select2.min.css',
+		'plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css',
 		'dist/css/adminlte.min.css',
 		'dist/css/loader.css',
 		// 'plugins/daterangepicker/daterangepicker.css',
@@ -23,9 +25,10 @@ class AppAsset
 		// 'plugins/daterangepicker/daterangepicker.js',
 		'plugins/moment/moment.min.js',
 		// 'plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js',
+		'plugins/select2/js/select2.full.min.js',
 		'dist/js/adminlte.min.js',
 		'js/sweetalert2.min.js',
-		'js/accounting.min.js',
+		'js/accounting.min.js'
 	];
 	private static $jsLogin = [
 		'plugins/jquery/jquery.min.js',

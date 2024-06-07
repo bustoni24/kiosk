@@ -95,13 +95,13 @@ class Setting extends CActiveRecord
 	}
 
 	public static function getValue($name, $default = null, $acceptEmpty = true) {
-        $environmentVariable = Setting::model()->findByAttributes(['name' => $name]);
+        /* $environmentVariable = Setting::model()->findByAttributes(['name' => $name]);
         if (isset($environmentVariable) && isset($environmentVariable->value)) {
             if ($acceptEmpty) {
                 return $environmentVariable->value;
             } else if (!empty($environmentVariable->value))
                 return $environmentVariable->value;
-        }
+        } */
         return $default;
     }
 

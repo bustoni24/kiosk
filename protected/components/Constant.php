@@ -3,6 +3,8 @@
 class Constant {
 
     const PROJECT_NAME = "KIOSK Efisiensi";
+    const SEARCH_BOARDING = 'boarding';
+    const SEARCH_DROP_OFF = 'drop_off';
 
     public static function baseUrl() {
         return Yii::app()->request->baseUrl;

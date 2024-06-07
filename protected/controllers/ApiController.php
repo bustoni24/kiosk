@@ -34,8 +34,7 @@ class ApiController extends Controller
 
 	public function actionSetTitikId()
 	{
-		$result = new Returner;
-		$res = $result->dump($_POST);
+		$res = ApiHelper::getInstance()->setTitikId($_POST);
 		doPrintResult($res);
 	}
 }

@@ -23,12 +23,27 @@ class ApiHelper {
         if(!isset($data['url'], $data['parameter']['method']))
             return $result;
 
+        $token = "";
         $keyToken = Helper::getInstance()->hashSha256("token");
-		$token = Helper::getInstance()->getState($keyToken);
-        if (empty($token))
-            $token = "";
-
+		$dataToken = Helper::getInstance()->getState($keyToken);
+        if (isset($dataToken['token']))
+            $token = $dataToken['token'];
+            
         if(isset($data['parameter']['postfields']) && $data['parameter']['method'] == "POST"){
+            $headers = [
+                'Content-Type: application/json',
+                'Authorization: ' . $token,
+                'cache-control: no-cache',
+            ];
+
+            if (SERVER_TYPE == "LOCAL") {
+                $headers = [
+                    'Content-Type: application/json',
+                    'Auth: ' . $token,
+                    'cache-control: no-cache',
+                ];
+            }
+
             $curl = curl_init();
             curl_setopt_array($curl, array(
                 CURLOPT_URL =>  $this->getUrl() . $data['url'],
@@ -41,11 +56,7 @@ class ApiHelper {
                 CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
                 CURLOPT_CUSTOMREQUEST => "POST",
                 CURLOPT_POSTFIELDS => json_encode($data['parameter']['postfields']),
-                CURLOPT_HTTPHEADER => array(
-                    'Content-Type: application/json',
-                    'Authorization: ' . $token,
-                    'cache-control: no-cache',
-                ),
+                CURLOPT_HTTPHEADER => $headers,
             ));
 
             $result = curl_exec($curl);
@@ -57,6 +68,14 @@ class ApiHelper {
                 'Authorization: ' . $token,
                 'cache-control: no-cache',
             ];
+
+            if (SERVER_TYPE == "LOCAL") {
+                $headers = [
+                    'Auth: ' . $token,
+                    'cache-control: no-cache',
+                ];
+            }
+
             $curl = curl_init();
             curl_setopt_array($curl, array(
                 CURLOPT_URL =>$this->getUrl() . $data['url'],
@@ -116,6 +135,17 @@ class ApiHelper {
             return "cURL Error #:" . $err;
 
         return $result;
+    }
+
+    public function setTitikId($post)
+    {
+        return ApiHelper::getInstance()->callUrl([
+			'url' => 'api/v1/kiosk/nearestPoint',
+			'parameter' => [
+				'method' => 'POST',
+                'postfields' => $post
+			]
+		]);
     }
 
     private static $instance;

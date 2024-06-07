@@ -126,6 +126,23 @@ class Helper {
     return $rit;
   }
 
+  public function checkSubMinute($time)
+  {
+    if (!isset($time) || empty($time))
+      $time = date('Y-m-d H:i:s');
+
+    // Waktu awal
+    $startTime = new DateTime($time);
+    // Waktu akhir
+    $endTime = new DateTime(date('Y-m-d H:i:s'));
+    // Menghitung selisih waktu
+    $interval = $startTime->diff($endTime);
+    // Menghitung selisih dalam menit
+    $minutes = ($interval->days * 24 * 60) + ($interval->h * 60) + $interval->i;
+
+    return $minutes;
+  }
+
   public function hashSha256($body = [])
     {
         $encode_data = json_encode($body, JSON_UNESCAPED_SLASHES);

@@ -37,8 +37,18 @@ class Controller extends CController
 			Yii::app()->end();
 		}
 
-    //check token
     $keyToken = Helper::getInstance()->hashSha256("token");
+    //check expiry token
+    $existingToken = Helper::getInstance()->getState($keyToken);
+    if (isset($existingToken['time'])) {
+      $diffMinute = Helper::getInstance()->checkSubMinute($existingToken['time']);
+      if ($diffMinute > 55) { //every 55 minute refresh token
+        //set null
+        Helper::getInstance()->setState($keyToken, null);
+      }
+    }
+
+    //check token
     if (empty(Helper::getInstance()->getState($keyToken))) {
         $result = new Returner;
         $token = ApiHelper::getInstance()->callUrl([
@@ -56,11 +66,14 @@ class Controller extends CController
           doPrintResult($res);
         }
         //set state
-        Helper::getInstance()->setState($keyToken, $token['data']['token_type'] . " " . $token['data']['access_token']);
+        Helper::getInstance()->setState($keyToken, [
+          'token' => $token['data']['token_type'] . " " . $token['data']['access_token'],
+          'time' => date('Y-m-d H:i:s')
+        ]);
     }
 
     Yii::app()->attachEventHandler('onError',array($this,'handleError'));
-    Yii::app()->attachEventHandler('onException', array($this, 'handleException'));
+    // Yii::app()->attachEventHandler('onException', array($this, 'handleException'));
 	}
 
   public function handleError(CEvent $event)

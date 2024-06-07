@@ -50,5 +50,5 @@ h1, a{
 <div class="section">
   <h1 class="error"><?=  "Error " . $code ?></h1>
   <div class="page"><?php echo CHtml::encode($message); ?></div>
-  <a class="back-home" href="<?= Constant::baseUrl() . '/' ?>">Back to home</a>
+  <a class="back-home" href="<?= Constant::baseUrl() . '/' ?>">Kembali ke Beranda dan Ulangi Input Data</a>
 </div>

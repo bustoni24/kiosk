@@ -8,14 +8,23 @@
       <div class="card">
         <div class="card-body register-card-body">
     
-          <form action="#" method="post">
+        <?php $form=$this->beginWidget('CActiveForm', array(
+          'id'=>'homepage-form',
+          // Please note: When you enable ajax validation, make sure the corresponding
+          // controller action is handling ajax validation correctly.
+          // There is a call to performAjaxValidation() commented in generated controller code.
+          // See class documentation of CActiveForm for details on this.
+          'enableAjaxValidation'=>false,
+          'action' => Constant::baseUrl().'/front/homepage',
+        )); 
+        ?>
             <div class="row justify-center">
 
               <div class="col-sm-3 col-relative pr-0">
               <div class="form-group">
                   <label>Dari</label>
                   <div class="input-group mb-3">
-                    <input type="text" class="form-control" placeholder="DARI">
+                  <?= CHtml::dropDownList("source", $model->source_id, $listTujuan, ['prompt' => 'Pilih Asal Keberangkatan', 'class' => 'form-control col-sm-11', 'required' => true]); ?>
                     <div class="input-group-append">
                       <div class="input-group-text">
                         <span class="fas fa-map-marker-alt"></span>
@@ -33,7 +42,7 @@
               <div class="form-group">
                   <label>Ke</label>
                   <div class="input-group mb-3">
-                  <input type="text" class="form-control" placeholder="KE">
+                  <?= CHtml::dropDownList("destination", $model->destination_id, $arrTujuan, ['prompt' => 'Pilih Tujuan Keberangkatan', 'class' => 'form-control col-sm-11', 'required' => true]); ?>
                   <div class="input-group-append">
                     <div class="input-group-text">
                       <span class="fas fa-map-marker-alt"></span>
@@ -45,32 +54,22 @@
 
               <div class="col-sm-2">
                 <div class="input-group mb-3">
-                  <input type="text" class="form-control" placeholder="Tgl Berangkat">
-                  <div class="input-group-append">
-                    <div class="input-group-text">
-                      <span class="far fa-calendar-alt"></span>
-                    </div>
-                  </div>
+                  <?= CHtml::textField("startdate", $model->startdate, ['readonly' => true, 'class' => 'form-control', 'placeholder' => 'Tgl Berangkat', 'required' => true]) ?>
                 </div>
               </div>
 
               <div class="col-sm-2">
                 <div class="input-group mb-3">
-                  <input type="text" class="form-control" placeholder="Tgl Pulang (Opsional)">
-                  <div class="input-group-append">
-                    <div class="input-group-text">
-                      <span class="far fa-calendar-alt"></span>
-                    </div>
-                  </div>
+                <?= CHtml::textField("enddate", $model->enddate, ['readonly' => true, 'class' => 'form-control', 'placeholder' => 'Tgl Pulang (Opsional)']) ?>
                 </div>
               </div>
 
               <div class="col-sm-1">
-                <button type="submit" class="btn btn-primary btn-block">Cari</button>
+                <button type="submit" onclick="return submitted()" class="btn btn-primary btn-block">Cari</button>
               </div>
             </div>           
            
-          </form>
+          <?php $this->endWidget(); ?>
   
         </div>
         <!-- /.form-box -->
@@ -80,32 +79,33 @@
 
 <script>
     window.addEventListener('load', function() {
-        checkToken();
+        $('#startdate').datepicker({
+          uiLibrary: 'bootstrap4',
+          format: 'yyyy-mm-dd',
+          header: true
+        });
+
+        $('#enddate').datepicker({
+          uiLibrary: 'bootstrap4',
+          format: 'yyyy-mm-dd',
+          header: true
+        });
+
+        $('.fa-exchange-alt').on('click', function(){
+          // exchange source and destination
+          // $('#TripTransit_tts_titik_awal').val("").trigger('change');
+        });
     });
-    var geoLoc = getLocation();
+    var titikId = "<?= isset($model->source_id) ? $model->source_id : null ?>";
+    var geoLoc = false;
+    if (titikId === null || titikId === ""){
+      geoLoc = getLocation();
+    }
     var options = {
         enableHighAccuracy: true,
         timeout: 5000,
         maximumAge: 0
     };
-    function checkToken()
-    {
-      //check token
-      $.ajax({
-        url: "<?= Constant::baseUrl() . '/api/requestToken' ?>",
-        type: 'get',
-        dataType: 'JSON',
-        success: function(data) {
-          console.log(data);
-          if (data.success) {
-            $('#preloader').addClass('none');
-          } else {
-            $('#preloader').removeClass('none');
-            swal.fire(data.message, '', 'error');
-          }
-        }
-      });
-    }
 
     function getLocation() {
         if (navigator.geolocation) {
@@ -144,7 +144,6 @@
         }
     }
 
-    var titikId = null;
     function getDetailCurrentLocation(latitude, longitude) {
         $.ajax({
             url: "<?= Constant::baseUrl() ?>/api/setTitikId",
@@ -155,12 +154,17 @@
             type: "POST",
             dataType: "JSON",
             success: function (data) {
-              console.log(data);
-              titikId = data.message;
+              if (data.success) {
+                if (typeof data.data !== "undefined") {
+                  var datas = data.data;
+                  if (typeof datas.titik_id !== "undefined") {
+                    titikId = datas.titik_id;
+                  }
+                }
+              }
             },
             complete: function(){
-                // setTitikId(latitude, longitude);
-                console.log(titikId);
+               setTitikId(titikId);
             },
             error: function () {
                 console.log('failed');
@@ -168,10 +172,17 @@
         });
     }
 
-    function setTitikId(latitude, longitude)
+    function setTitikId(titikId)
     {
-
+      location.href = "<?= Constant::baseUrl() . '/' . $this->route ?>?source="+titikId;
     }
 
-    setInterval(checkToken, 1000 * 60 * 55); //10 menit
+    function submitted() {
+      var startdate = $('#startdate').val();
+      if (startdate === "") {
+        swal.fire('Silahkan isi tanggal keberangkatan', '', 'warning');
+        return false;
+      }
+      return true;
+    }
 </script>
