@@ -16,6 +16,11 @@
       --color-primary-hover: #da6400;
       --color-text-primary: #ffb03b;
       --bg-white: #fff;
+      --color-border: #bebcbc;
+      --color-available: #fff;
+      --color-men: #fa6262;
+      --color-women: #629afa;
+      --color-selected: #62fa79;
     }
     .login-box, .register-box {
         width: 88vw;
@@ -75,6 +80,7 @@
   display: flex;
     align-items: center;
     margin-bottom: 1rem !important;
+    padding: 3px;
 }
 .col-sm-05 i.fas {
   border: 1px solid #858383;
@@ -130,7 +136,7 @@ body:not(.sidebar-mini-md):not(.sidebar-mini-xs):not(.layout-top-nav) .content-w
 .nav-form {
   position: relative;
     width: 100%;
-    padding-top: 2rem;
+    padding-top: 2.2rem;
     background-color: #fff;
     border-bottom: 1px solid #ccc;
 }
@@ -149,15 +155,197 @@ body:not(.sidebar-mini-md):not(.sidebar-mini-xs):not(.layout-top-nav) .content-w
 .w-100 {
   width: 100%!important;
 }
-.homepage {
+.homepage, .seatmap {
   width: 100%;
 }
-.homepage .content-header h1 {
-    font-size: 1.5rem;
+.homepage .content-header h1, .seatmap .content-header h1 {
+    font-size: 1.3rem;
     margin: 0;
     font-weight: 600;
     color: var(--color-primary);
 }
+.card-header>.card-tools {
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+span.arrow{
+        color:#000;font-size:13px;font-weight:700;
+    }
+    .time-info, .seat-info {
+            font-size: 13px;
+    }
+    .route {
+        font-size: 1.1rem;
+    }
+    .route .col-sm-5{
+        flex: 0 0 41.666667%;
+        max-width: 41.666667%;
+    }
+    .route .col-sm-2{
+        -ms-flex: 0 0 16.666667%;
+        flex: 0 0 16.666667%;
+        max-width: 16.666667%;
+    }
+    .price-layout {
+        justify-content: space-around;
+    }
+    .price-layout .price {
+        text-align: center;
+        font-size: 1.2rem;
+        font-weight: 700;
+        color: #721c24;
+    }
+    .additional-info {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 20px;
+        font-size: 16px;
+        background-color: #f3e8dc;
+        border-top: 1px solid #bfbfbf;
+        width: 100%;
+        padding: 10px 20px;
+    }
+    .list-view div.items {
+        border: none;
+        max-height: 500px;
+        overflow-y: auto;
+    }
+    .border-custom {
+        border: 1px solid #ccc;
+    }
+    .divider {
+        background-color: #fff;
+        padding: 20px 0px;
+        margin-left: -1rem;
+        margin-right: -1rem;
+    }
+    .no_available_trip{
+        padding: 20px;
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: red;
+    }
+    .seatmap .checkbox-wrapper {
+        display: inline-block;
+        position: relative;
+        padding-left: 30px;
+        margin-bottom: 15px;
+        cursor: pointer;
+    }
+
+    .seatmap .checkbox-wrapper input {
+        opacity: 0;
+        cursor: pointer;
+    }
+
+    .seatmap .checkmark {
+        z-index: 0;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        height: 45px;
+        width: 45px;
+        background-image: url('<?= Constant::iconSeat() ?>');
+        background-size: cover;
+        transform: translate(-50%, -50%);
+    }
+
+    .seatmap .checkbox-wrapper input:checked ~ .checkmark {
+        z-index: 0;
+        background-image: url('<?= Constant::iconSeat("selected") ?>');
+        left: 65%;
+    }
+
+    .seatmap .booked {
+        z-index: 0;
+        background-image: url('<?= Constant::iconSeat("booked") ?>');
+        left: 65%;
+    }
+    .seatmap .booked-girl {
+        z-index: 0;
+        background-image: url('<?= Constant::iconSeat("temporary") ?>');
+    }
+    .seatmap .text-checkmark{
+        position:absolute;
+        top: 70%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-weight: 700;
+        font-size: smaller;
+    }
+    .seatmap table.table-deck>tbody>tr>td {
+        padding: 2px;
+    }
+    .seatmap .table-deck .checkbox{
+        margin-top: 10px;
+    }
+    .seatmap .img-icon {
+        width: 60px;
+    }
+    .seatmap .door {
+        vertical-align: middle!important;
+    text-align: center;
+    background-color: antiquewhite;
+    min-height: 7vh;
+    }
+    .seatmap .contact-form div, .seatmap .contact-form label {
+    padding: 10px;
+}
+.seatmap p {
+    margin-bottom: 5px;
+}
+.time-info, .seat-info {
+            font-size: 12px;
+        }
+        .layout-seat {
+            padding: 20px;
+        }
+        .layout-seat .head-title {
+            text-align: center;
+            padding: 10px;
+            background-color: #fff;
+            font-weight: 700;
+        }
+        .layout-seat .subhead-title {
+            padding: 10px;
+            font-size: 12px;
+        }
+        .layout-form .head-title {
+            padding: 10px;
+            background-color: #fff;
+            font-weight: 700;
+        }
+        .justify-center {
+            justify-content: center;
+        }
+        .justify-between {
+            justify-content: space-between;
+        }
+        .legend {
+            padding: 1px 8px;
+            border: 1px solid var(--color-border);
+            border-radius: 50%;
+            margin-right: 5px;
+            margin-left: 5px;
+        }
+        .legend-available {
+            background-color: var(--color-available);
+        }
+        .legend-men {
+            background-color: var(--color-men);
+            border-color: var(--color-available);
+        }
+        .legend-women {
+            background-color: var(--color-women);
+            border-color: var(--color-available);
+        }
+        .legend-selected {
+            background-color: var(--color-selected);
+            border-color: var(--color-available);
+        }
+        .border-none {
+            border: none;
+        }
   </style>
 </head>
 <body class="hold-transition">
@@ -226,6 +414,51 @@ body:not(.sidebar-mini-md):not(.sidebar-mini-xs):not(.layout-top-nav) .content-w
     window.addEventListener('load', function() {
         $('select').select2();
     });
+
+    jQuery(function($) { $.extend({
+    form: function(url, data, method) {
+        if (method == null) method = 'POST';
+        if (data == null) data = {};
+
+        var form = $('<form>').attr({
+            method: method,
+            action: url
+         }).css({
+            display: 'none'
+         });
+
+        var addData = function(name, data) {
+            if ($.isArray(data)) {
+                for (var i = 0; i <= data.length; i++) {
+                    var value = data[i];
+                    addData(name + '[]', value);
+                }
+            } else if (typeof data === 'object') {
+                for (var key in data) {
+                    if (data.hasOwnProperty(key)) {
+                        addData(name + '[' + key + ']', data[key]);
+                    }
+                }
+            } else if (data != null) {
+                form.append($('<input>').attr({
+                  type: 'hidden',
+                  name: String(name),
+                  value: String(data)
+                }));
+            }
+        };
+
+        for (var key in data) {
+            if (data.hasOwnProperty(key)) {
+                addData(key, data[key]);
+            }
+        }
+
+        return form.appendTo('body');
+    }
+});
+    });
+
     function checkToken()
     {
       //check token

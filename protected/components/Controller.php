@@ -72,7 +72,7 @@ class Controller extends CController
         ]);
     }
 
-    Yii::app()->attachEventHandler('onError',array($this,'handleError'));
+    // Yii::app()->attachEventHandler('onError',array($this,'handleError'));
     // Yii::app()->attachEventHandler('onException', array($this, 'handleException'));
 	}
 

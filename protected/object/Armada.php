@@ -5,8 +5,9 @@ class Armada
 	public $startdate, $enddate, $filter = null, $get = null;
 	public $id_trip,$group,$kelas,$groupId,$armadaId;
     public $source_id = null, $destination_id = null;
+    public $source_name,$destination_name,$search_type;
 
-    public function searchListBus()
+    public function searchListBus($search_type = Constant::SEARCH_BOARDING)
     {
         $data = [];
         if (!isset($this->startdate) || empty($this->startdate)){
@@ -17,15 +18,38 @@ class Armada
 					),
 				));	
 		}
+        $startdate = $this->startdate;
+        $enddate = $this->enddate;
+        $source_id_ori = $this->source_id;
+        $destination_id_ori = $this->destination_id;
+        switch ($search_type) {
+            case Constant::SEARCH_DROP_OFF:
+                $this->startdate = $enddate;
+                $this->source_id = $destination_id_ori;
+                $this->destination_id = $source_id_ori;
+                $boarding_name = $this->source_name;
+                $drop_off_name = $this->destination_name;
+                $this->source_name = $drop_off_name;
+                $this->destination_name = $boarding_name;
+                break;
+            
+            default:
+                $this->startdate = $startdate;
+                break;
+        }
+        $this->search_type = $search_type;
+
 		$res = ApiHelper::getInstance()->callUrl([
-            'url' => 'apiMobile/listBusV2',
+            'url' => 'api/v1/kiosk/searchTrip',
             'parameter' => [
                 'method' => 'POST',
                 'postfields' => [
 					'startdate' => $this->startdate,
-					'source_id' => $this->source_id,
-					'destination_id' => $this->destination_id,
-					'filter' => $this->filter
+                    'source_id' => $this->source_id,
+                    'destination_id' => $this->destination_id,
+                    'source_name' => $this->source_name,
+                    'destination_name' => $this->destination_name,
+                    'search_type' => $this->search_type
 					]
             ]
         ]);
@@ -44,7 +68,7 @@ class Armada
                     ),
             ));
         }
-        // Helper::getInstance()->dump($res);
+
         $data = $res['data'];
 		return new CArrayDataProvider($data, array(
 			'keyField' => 'id',
@@ -53,121 +77,6 @@ class Armada
 				),
 			));	
     }
-
-	public function getKelasArmada()
-	{
-		$result = [];
-		$res = ApiHelper::getInstance()->callUrl([
-            'url' => 'apiMobile/getKelasArmada?1=1',
-            'parameter' => [
-                'method' => 'GET'
-            ]
-        ]);
-        if (isset($res['data'])) {
-            $result = $res['data'];
-            if (isset($result['3']))
-                unset($result['3']);
-        }
-
-		return $result;
-	}
-
-	public function getGroupTrip()
-	{
-		$result = [];
-		$res = ApiHelper::getInstance()->callUrl([
-            'url' => 'apiMobile/getGroupTrip?1=1',
-            'parameter' => [
-                'method' => 'GET'
-            ]
-        ]);
-        if (isset($res['data'])) {
-            $result = $res['data'];
-        }
-		return $result;
-	}
-
-    public function getOptionsArmada()
-    {
-        $result = [];
-		$res = ApiHelper::getInstance()->callUrl([
-            'url' => 'apiMobile/getOptionsArmada?1=1',
-            'parameter' => [
-                'method' => 'GET'
-            ]
-        ]);
-        if (isset($res['data'])) {
-            $result = $res['data'];
-        }
-		return $result;
-    }
-
-    public function getAsalKeberangkatan()
-    {
-        $result = [];
-        $this->destination_id = isset(Yii::app()->user->destination_id) ? Yii::app()->user->destination_id : null;
-		$res = ApiHelper::getInstance()->callUrl([
-            'url' => 'apiMobile/getAsalKeberangkatan',
-            'parameter' => [
-                'method' => 'POST',
-                'postfields' => [
-					'destination_id' => $this->destination_id
-                ]
-            ]
-        ]);
-        if (isset($res['data'])) {
-            $result = $res['data'];
-        }
-		return $result;
-    }
-
-    public function getTujuan($model)
-    {
-        $result = [];
-        if (!isset($model->startdate, $model->latitude, $model->longitude, $model->rit)) {
-            return $result;
-        }
-
-        // Helper::getInstance()->dump($model);
-        $get = [
-            'user_id' => Yii::app()->user->id,
-            'role' => Yii::app()->user->role,
-            'startdate' => $model->startdate,
-            'rit' => $model->rit,
-            'latitude' => $model->latitude,
-            'longitude' => $model->longitude,
-            'tujuan' => $model->tujuan,
-            'penjadwalan_id' => $model->penjadwalan_id_fake
-        ];
-       
-		$res = ApiHelper::getInstance()->callUrl([
-            'url' => 'apiMobile/getTujuan',
-            'parameter' => [
-                'method' => 'POST',
-                'postfields' => $get
-            ]
-        ]);
-        // Helper::getInstance()->dump($res);
-        if (isset($res['data'])) {
-            $result = $res['data'];
-        }
-		return $result;
-    }
-
-    public function getTrip()
-	{
-		$result = [];
-		$res = ApiHelper::getInstance()->callUrl([
-            'url' => 'apiMobile/getTrip?1=1',
-            'parameter' => [
-                'method' => 'GET'
-            ]
-        ]);
-        if (isset($res['data'])) {
-            $result = $res['data'];
-        }
-		return $result;
-	}
 
 	private static $instance;
 

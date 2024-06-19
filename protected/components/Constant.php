@@ -5,6 +5,7 @@ class Constant {
     const PROJECT_NAME = "KIOSK Efisiensi";
     const SEARCH_BOARDING = 'boarding';
     const SEARCH_DROP_OFF = 'drop_off';
+    const TEMP_POST = "temp_post";
 
     public static function baseUrl() {
         return Yii::app()->request->baseUrl;
@@ -48,5 +49,41 @@ class Constant {
 
     public static function defaultAction() {
     	return ['admin','index','create','view','update','delete'];
+    }
+
+    public static function iconSeat($type = "") {
+        switch ($type) {
+            case 'selected':
+                return self::baseUrl() . '/images/icon/seat_car_green.png';
+                break;
+
+            case 'booked':
+                return self::baseUrl() . '/images/icon/seat_car_red.png';
+                break;
+
+            case 'temporary':
+                return self::baseUrl() . '/images/icon/seat_car_blue.png';
+                break;
+            
+            default:
+                return self::baseUrl() . '/images/icon/seat_car_default.png';
+                break;
+        }
+    }
+
+    public static function steeringWheelIcon() {
+        return self::baseUrl() . '/images/icon/steering_wheel.png';
+    }
+
+    public static function toiletIcon() {
+        return self::baseUrl() . '/images/icon/toilet.png';
+    }
+
+    public static function toiletSignIcon() {
+        return self::baseUrl() . '/images/icon/toilet_sign.png';
+    }
+
+    public static function newLogoIcon() {
+        return self::baseUrl() . '/images/new_logo_efisiensii.png';
     }
 }

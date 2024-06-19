@@ -114,7 +114,7 @@ class ApiHelper {
         return json_decode($result, true);
     }
 
-    function get_geolocation($apiKey, $ip, $lang = "en", $fields = "*", $excludes = "") {
+    public function get_geolocation($apiKey, $ip, $lang = "en", $fields = "*", $excludes = "") {
         $url = "https://api.ipgeolocation.io/ipgeo?apiKey=".$apiKey."&ip=".$ip."&lang=".$lang."&fields=".$fields."&excludes=".$excludes;
         $cURL = curl_init();
 

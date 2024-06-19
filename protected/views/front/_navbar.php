@@ -71,17 +71,20 @@
 </div>
 
 <script>
+  var today = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
     window.addEventListener('load', function() {
         $('#startdate').datepicker({
           uiLibrary: 'bootstrap4',
           format: 'yyyy-mm-dd',
-          header: true
+          header: true,
+          minDate: today
         });
 
         $('#enddate').datepicker({
           uiLibrary: 'bootstrap4',
           format: 'yyyy-mm-dd',
-          header: true
+          header: true,
+          minDate: today
         });
     });
 </script>
