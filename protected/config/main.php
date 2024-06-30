@@ -94,7 +94,7 @@ $config = array(
     // using Yii::app()->params['paramName']
     'params' => array(
         // this is used in contact page
-        'sessionTimeoutSeconds' => 3300, // in second (55 minutes)
+        'sessionTimeoutSeconds' => 3600, // in second (60 minutes)
         'adminEmail' => 'webmaster@example.com',
         //'ldap_host' => constant("LdapHost"),
         //'ldap_port' => constant("LdapPort"),

@@ -157,6 +157,7 @@ class COutputCache extends CFilterWidget
 	 * Performs filtering before the action is executed.
 	 * This method is meant to be overridden by child classes if begin-filtering is needed.
 	 * @param CFilterChain $filterChain list of filters being applied to an action
+	 * @return boolean whether the filtering process should stop after this filter. Defaults to false.
 	 */
 	public function filter($filterChain)
 	{
@@ -183,6 +184,11 @@ class COutputCache extends CFilterWidget
 		}
 	}
 
+	public function html_entities($text)
+	{
+		return htmlentities($text,ENT_QUOTES,'UTF-8');
+	}
+
 	/**
 	 * Marks the end of content to be cached.
 	 * Content displayed before this method call and after {@link init()}
@@ -194,9 +200,9 @@ class COutputCache extends CFilterWidget
 		if($this->getIsContentCached())
 		{
 			if($this->getController()->isCachingStackEmpty())
-				echo $this->getController()->processDynamicOutput($this->_content);
+				echo $this->html_entities($this->getController()->processDynamicOutput($this->_content));
 			else
-				echo $this->_content;
+				echo $this->html_entities($this->_content);
 		}
 		elseif($this->_cache!==null)
 		{
@@ -208,9 +214,9 @@ class COutputCache extends CFilterWidget
 			$this->_cache->set($this->getCacheKey(),$data,$this->duration,$this->dependency);
 
 			if($this->getController()->isCachingStackEmpty())
-				echo $this->getController()->processDynamicOutput($this->_content);
+				echo $this->html_entities($this->getController()->processDynamicOutput($this->_content));
 			else
-				echo $this->_content;
+				echo $this->html_entities($this->_content);
 		}
 	}
 

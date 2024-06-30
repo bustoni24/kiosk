@@ -131,6 +131,10 @@ class CHtml
 		return htmlspecialchars_decode($text,ENT_QUOTES);
 	}
 
+	public static function html_entities($text)
+	{
+		return htmlentities($text,ENT_QUOTES,Yii::app()->charset);
+	}
 	/**
 	 * Encodes special characters in an array of strings into HTML entities.
 	 * Both the array keys and values will be encoded if needed.

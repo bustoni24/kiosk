@@ -41,7 +41,7 @@ class YiiBase
 	private static $_logger;
 	public static function getVersion()
 	{
-		return '1.1.29';
+		return '1.1.28';
 	}
 	public static function createWebApplication($config=null)
 	{
@@ -3982,7 +3982,7 @@ class CController extends CBaseController
 			if($return)
 				return $output;
 			else
-				echo $output;
+				echo CHtml::html_entities($output);
 		}
 	}
 	protected function beforeRender($view)
@@ -4211,10 +4211,11 @@ abstract class CAction extends CComponent implements IAction
 			$name=$param->getName();
 			if(isset($params[$name]))
 			{
-				if(version_compare(PHP_VERSION,'8.0','>='))
-					$isArray=($type=$param->getType()) instanceof \ReflectionNamedType && $type->getName()==='array';
-				else
+				if(version_compare(PHP_VERSION,'8.0','>=')) {
+					$isArray=$param->getType() && $param->getType()->getName()==='array';
+				} else {
 					$isArray=$param->isArray();
+                }
 				if($isArray)
 					$ps[]=is_array($params[$name]) ? $params[$name] : array($params[$name]);
 				elseif(!is_array($params[$name]))
@@ -4967,6 +4968,10 @@ class CHtml
 	public static function decode($text)
 	{
 		return htmlspecialchars_decode($text,ENT_QUOTES);
+	}
+	public static function html_entities($text)
+	{
+		return htmlentities($text,ENT_QUOTES,Yii::app()->charset);
 	}
 	public static function encodeArray($data)
 	{

@@ -159,7 +159,7 @@ class PostController extends Controller
 		{
 			$tags=Tag::model()->suggestTags($keyword);
 			if($tags!==array())
-				echo implode("\n",$tags);
+				echo CHtml::html_entities(implode("\n",$tags));
 		}
 	}
 

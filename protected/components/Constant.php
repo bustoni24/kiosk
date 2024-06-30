@@ -6,6 +6,7 @@ class Constant {
     const SEARCH_BOARDING = 'boarding';
     const SEARCH_DROP_OFF = 'drop_off';
     const TEMP_POST = "temp_post";
+    const BOOKING_PUBLIC = 'public';
 
     public static function baseUrl() {
         return Yii::app()->request->baseUrl;

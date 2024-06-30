@@ -8,7 +8,7 @@ class Controller extends CController
     public $arrAnswer = array();
     public $topTitle = Constant::PROJECT_NAME; 
     public $login_user = null;
-    public $dataTempBarang = [];
+    public $paramPost = [];
     
 	/**
 	 * @var string the default layout for the controller view. Defaults to '//layouts/column1',
@@ -70,6 +70,15 @@ class Controller extends CController
           'token' => $token['data']['token_type'] . " " . $token['data']['access_token'],
           'time' => date('Y-m-d H:i:s')
         ]);
+    }
+
+    function checkSessionPembelian()
+    {
+      $paramPost = Helper::getInstance()->getState(Constant::TEMP_POST);
+      if (!isset($paramPost['FormBooking'][Constant::SEARCH_BOARDING])){
+            Yii::app()->user->setFlash('error', 'Mohon Maaf Sesi Anda telah berakhir');
+            Yii::app()->controller->redirect(Constant::baseUrl().'/');
+        }
     }
 
     // Yii::app()->attachEventHandler('onError',array($this,'handleError'));

@@ -1,13 +1,15 @@
     
 <div class="nav-form">
-<?php $form=$this->beginWidget('CActiveForm', array(
+<?php 
+$id = isset($_GET['id']) ? CHtml::encode($_GET['id']) : null;
+$form=$this->beginWidget('CActiveForm', array(
           'id'=>'homepage-form',
           // Please note: When you enable ajax validation, make sure the corresponding
           // controller action is handling ajax validation correctly.
           // There is a call to performAjaxValidation() commented in generated controller code.
           // See class documentation of CActiveForm for details on this.
           'enableAjaxValidation'=>false,
-          'action' => Constant::baseUrl().'/'.$this->route,
+          'action' => Constant::baseUrl().'/'.$this->route . (isset($id) ? '/' . $id : ''),
         )); 
         ?>
             <div class="row justify-center">
@@ -16,7 +18,7 @@
               <div class="form-group">
                   <label>Dari</label>
                   <div class="input-group mb-3">
-                  <?= CHtml::dropDownList("source", $model->source_id, $listTujuan, ['prompt' => 'Pilih Asal Keberangkatan', 'class' => 'form-control col-sm-11', 'required' => true]); ?>
+                  <?= CHtml::dropDownList("source_id", $model->source_id, $listTujuan, ['prompt' => 'Pilih Asal Keberangkatan', 'class' => 'form-control col-sm-11', 'required' => true]); ?>
                     <div class="input-group-append">
                       <div class="input-group-text">
                         <span class="fas fa-map-marker-alt"></span>
@@ -34,7 +36,7 @@
               <div class="form-group">
                   <label>Ke</label>
                   <div class="input-group mb-3">
-                  <?= CHtml::dropDownList("destination", $model->destination_id, $arrTujuan, ['prompt' => 'Pilih Tujuan Keberangkatan', 'class' => 'form-control col-sm-11', 'required' => true]); ?>
+                  <?= CHtml::dropDownList("destination_id", $model->destination_id, $arrTujuan, ['prompt' => 'Pilih Tujuan Keberangkatan', 'class' => 'form-control col-sm-11', 'required' => true]); ?>
                   <div class="input-group-append">
                     <div class="input-group-text">
                       <span class="fas fa-map-marker-alt"></span>

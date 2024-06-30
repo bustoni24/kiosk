@@ -149,12 +149,14 @@ width: 50%;
             <?php
         }
     ?>
-    $(window).on('beforeunload', function() {
-        $('#preloader').removeClass('none');
-    });
-    $(window).on('onunload', function() {
-      $('#preloader').addClass('none');
-    });
+    <?php if ($this->action->Id != 'successPayment'): ?>
+      $(window).on('beforeunload', function() {
+          $('#preloader').removeClass('none');
+      });
+      $(window).on('onunload', function() {
+        $('#preloader').addClass('none');
+      });
+    <?php endif; ?>
 
     window.addEventListener('load', function() {
         checkToken();
@@ -179,6 +181,12 @@ width: 50%;
       });
     }
     setInterval(checkToken, 1000 * 60 * 55); //10 menit
+    function backHomePage()
+    {
+      setTimeout(function() {
+        location.href = "<?= Constant::baseUrl() . '/' ?>";
+      }, 1000 * 60 * 10);
+    }
 </script>
 </body>
 </html>

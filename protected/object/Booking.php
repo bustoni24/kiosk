@@ -38,6 +38,7 @@ class Booking
             ]
         ]);
 
+        // Helper::getInstance()->dump($res);
         return $res;
     }
 

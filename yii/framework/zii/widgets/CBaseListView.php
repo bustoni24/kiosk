@@ -95,7 +95,7 @@ abstract class CBaseListView extends CWidget
 	 * Note, this property must not contain false, null or empty string values. Otherwise such values may
 	 * cause undefined behavior.
 	 */
-	public $itemsCssClass='items';
+	public $itemsCssClass='table table-striped table-bordered';
 	/**
 	 * @var string the CSS class name for the summary text container. Defaults to 'summary'.
 	 */

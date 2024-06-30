@@ -346,6 +346,9 @@ span.arrow{
         .border-none {
             border: none;
         }
+        .max-w-60{
+            max-width: 60%;
+        }
   </style>
 </head>
 <body class="hold-transition">
@@ -362,7 +365,9 @@ span.arrow{
 <ul class="navbar-nav">
       <li class="nav-item">
       <div class="content-header p-0">
-      <h1 class="text-white"><?= Constant::PROJECT_NAME ?></h1>
+        <a href="<?= Constant::baseUrl() . '/' ?>">
+            <h1 class="text-white"><?= Constant::PROJECT_NAME ?></h1>
+        </a>
       </div>
       </li>
     </ul>
@@ -404,12 +409,14 @@ span.arrow{
             <?php
         }
     ?>
-    $(window).on('beforeunload', function() {
-        $('#preloader').removeClass('none');
-    });
-    $(window).on('onunload', function() {
-      $('#preloader').addClass('none');
-    });
+     <?php if ($this->action->Id != 'successPayment'): ?>
+      $(window).on('beforeunload', function() {
+          $('#preloader').removeClass('none');
+      });
+      $(window).on('onunload', function() {
+        $('#preloader').addClass('none');
+      });
+    <?php endif; ?>
 
     window.addEventListener('load', function() {
         $('select').select2();
@@ -479,6 +486,14 @@ span.arrow{
       });
     }
     setInterval(checkToken, 1000 * 60 * 55); //55 menit
+
+
+    function backHomePage()
+    {
+      setTimeout(function() {
+        location.href = "<?= Constant::baseUrl() . '/' ?>";
+      }, 1000 * 60 * 10);
+    }
 </script>
 </body>
 </html>

@@ -55,7 +55,6 @@ class <?php echo $modelClass; ?> extends <?php echo $this->baseClass."\n"; ?>
 	/**
 	 * @return string the associated database table name
 	 */
-	public $display, $filter;
 	public function tableName()
 	{
 		return '<?php echo $tableName; ?>';
@@ -135,19 +134,10 @@ foreach($columns as $name=>$column)
 	}
 }
 ?>
-		if (isset($this->filter) && !empty($this->filter)) {
-			$criteria->addCondition("id LIKE '%$this->filter%'");
-		}
 
-		$params = array(
+		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
-		);
-
-		if (isset($this->display) && !empty($this->display) && is_numeric($this->display)) {
-			$params['pagination']['pageSize'] = $this->display;
-		}
-
-		return new CActiveDataProvider($this, $params);
+		));
 	}
 
 <?php if($connectionId!='db'):?>

@@ -24,7 +24,7 @@
               <div class="form-group">
                   <label>Dari</label>
                   <div class="input-group mb-3">
-                  <?= CHtml::dropDownList("source", $model->source_id, $listTujuan, ['prompt' => 'Pilih Asal Keberangkatan', 'class' => 'form-control col-sm-11', 'required' => true]); ?>
+                  <?= CHtml::dropDownList("source_id", $model->source_id, $listTujuan, ['prompt' => 'Pilih Asal Keberangkatan', 'class' => 'form-control col-sm-11', 'required' => true]); ?>
                     <div class="input-group-append">
                       <div class="input-group-text">
                         <span class="fas fa-map-marker-alt"></span>
@@ -42,7 +42,7 @@
               <div class="form-group">
                   <label>Ke</label>
                   <div class="input-group mb-3">
-                  <?= CHtml::dropDownList("destination", $model->destination_id, $arrTujuan, ['prompt' => 'Pilih Tujuan Keberangkatan', 'class' => 'form-control col-sm-11', 'required' => true]); ?>
+                  <?= CHtml::dropDownList("destination_id", $model->destination_id, $arrTujuan, ['prompt' => 'Pilih Tujuan Keberangkatan', 'class' => 'form-control col-sm-11', 'required' => true]); ?>
                   <div class="input-group-append">
                     <div class="input-group-text">
                       <span class="fas fa-map-marker-alt"></span>
@@ -177,7 +177,9 @@
 
     function setTitikId(titikId)
     {
-      location.href = "<?= Constant::baseUrl() . '/' . $this->route ?>?source="+titikId;
+      setTimeout(function() {
+        location.href = "<?= Constant::baseUrl() . '/' . $this->route ?>?source="+titikId;
+      }, 1000);
     }
 
     function submitted() {

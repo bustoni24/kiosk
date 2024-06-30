@@ -43,6 +43,9 @@
 
             <div class="card-header">
             <h3 class="card-title">
+                <?php if ($model->return): ?>
+                    <h1>Pilih Jadwal Kepulangan</h1>
+                <?php endif; ?>
             <h1><?= $model->destination_name . ' <span class="arrow"><i class="fa fa-arrow-right"></i></span> ' . $model->source_name ?></h1>
             </h3>
 
@@ -76,6 +79,13 @@
         - This doesn't wait for stylesheets, 
           images, and subframes to finish loading. 
       */
+      var targetDrop = $('#listDropoff');
+        <?php if ($model->return): ?>
+            $('html, body').animate({
+                scrollTop: $(targetDrop).offset().top
+            }, 1000); // Durasi animasi dalam milidetik
+        <?php endif; ?>
+
         $("body").on("click", ".chooseRoute", function(e){
         e.preventDefault();
             
@@ -91,16 +101,37 @@
                 var search_type = $(this).attr('data-search_type');
                 var source_name = $(this).attr('data-source_name');
                 var destination_name = $(this).attr('data-destination_name');
-                var startdate = "<?= $model->startdate ?>";
+                
                 var enddate = "<?= $model->enddate ?>";
+                <?php if ($model->return): ?>
+                    enddate = null;
+                <?php endif; ?>
                 var source_id =  $(this).attr('data-source_id');
                 var destination_id =  $(this).attr('data-destination_id');
 
                 if (search_type == 'drop_off') {
                     <?php if (empty(Helper::getInstance()->getState(Constant::TEMP_POST))): ?>
-                    alert('Mohon pilih jadwal keberangkatan terlebih dahulu');
-                    // swal.fire('Mohon pilih jadwal keberangkatan terlebih dahulu', '', 'warning');
+                    swal.fire('Mohon pilih jadwal keberangkatan terlebih dahulu', '', 'warning');
+
                     $("html, body").animate({ scrollTop: 0 }, "slow");
+                    return false;
+                    <?php endif; ?>
+                } else {
+                    <?php if (isset(Yii::app()->session['post_return'])): ?>
+
+                    swal.fire('Mohon Pilih Jadwal Kepulangan!', '', 'warning');
+
+                    Swal.fire({
+                        text: 'Mohon Pilih Jadwal Kepulangan!',
+                        icon: 'warning',
+                        confirmButtonText: 'Ok'
+                    }).then((result) => {
+                        $('html, body').animate({
+                            scrollTop: $(targetDrop).offset().top
+                        }, 1000); // Durasi animasi dalam milidetik
+                    });
+
+                    
                     return false;
                     <?php endif; ?>
                 }

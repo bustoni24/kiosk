@@ -144,11 +144,19 @@ class Helper {
   }
 
   public function hashSha256($body = [])
-    {
-        $encode_data = json_encode($body, JSON_UNESCAPED_SLASHES);
-        $encode_data = preg_replace('/\s+/S', "", $encode_data);
-        return strtolower(hash("sha256", $encode_data));
-    }
+  {
+      $encode_data = json_encode($body, JSON_UNESCAPED_SLASHES);
+      $encode_data = preg_replace('/\s+/S', "", $encode_data);
+      return strtolower(hash("sha256", $encode_data));
+  }
+
+  public function hashPassword($password)
+  {
+      if (!isset($password))
+          return "";
+
+      return hash("sha256", $password);
+  }
 
   public function setState($name = null, $value = null)
   {
@@ -169,6 +177,24 @@ class Helper {
         $result = Yii::app()->user->getState($name);
       }
     return $result;
+  }
+
+  public static function clearSession()
+  {
+    if (isset(Yii::app()->user->id)) {
+      if (isset(Yii::app()->session)){
+        Yii::app()->session->clear();
+        Yii::app()->session->destroy();
+      }
+      Yii::app()->user->logout();
+    }
+
+    if (isset(Yii::app()->session['post_return']))
+      unset(Yii::app()->session['post_return']);
+    if (isset(Yii::app()->session['post_seatmap']))
+      unset(Yii::app()->session['post_seatmap']);
+
+    Helper::getInstance()->setState(Constant::TEMP_POST, null);
   }
 
    public function dump($data = [])

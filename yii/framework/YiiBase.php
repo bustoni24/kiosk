@@ -87,7 +87,7 @@ class YiiBase
 	 */
 	public static function getVersion()
 	{
-		return '1.1.29';
+		return '1.1.28';
 	}
 
 	/**
@@ -459,8 +459,12 @@ class YiiBase
 						}
 					}
 				}
-				else
-					include($className.'.php');
+				else{
+					if ($className == 'ZipArchive')
+						include(YII_PATH.'/../../protected/extensions/phpexcelv2/vendor/PHPExcel/Shared/'.$className.'.php');
+					else 
+						include($className.'.php');
+				}
 			}
 			else  // class name with namespace in PHP 5.3
 			{

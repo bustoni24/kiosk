@@ -6,6 +6,7 @@ class Armada
 	public $id_trip,$group,$kelas,$groupId,$armadaId;
     public $source_id = null, $destination_id = null;
     public $source_name,$destination_name,$search_type;
+    public $return = 0;
 
     public function searchListBus($search_type = Constant::SEARCH_BOARDING)
     {
