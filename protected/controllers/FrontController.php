@@ -73,6 +73,8 @@ class FrontController extends Controller
 		if (isset(Yii::app()->session['post_return'])) {
 			$_POST = Yii::app()->session['post_return'];
 		}
+		if (isset(Yii::app()->session['post_seatmap']))
+			unset(Yii::app()->session['post_seatmap']);
 
 		if (!isset($_POST['startdate'], $_POST['source_id'], $_POST['destination_id'])) {
 			throw new CHttpException(404,'Halaman yang diminta tidak valid. Pastikan Anda telah benar dalam memilih titik keberangkatan, tujuan dan tanggal!');
